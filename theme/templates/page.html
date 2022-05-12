@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block html_lang %}{{ page.lang }}{% endblock %}
+
+{% block title %}{{ SITENAME }} - {{ page.title|striptags }}{%endblock%}
+
+{% block head %}
+  {{ super() }}
+
+  {% import 'translations.html' as translations with context %}
+  {% if translations.entry_hreflang(page) %}
+    {{ translations.entry_hreflang(page) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if page.about %}
+      {% include "about.html" %}
+    {% elif page.portfolio1 %}
+      {% include "portfolio1.html" %}
+    {% elif page.portfolio2 %}
+      {% include "portfolio2.html" %}
+    {% elif page.contact %}
+      {% include "contact.html" %}
+    {% else %}
+    <h1>{{ page.title }}</h1>
+    {% import 'translations.html' as translations with context %}
+    {{ translations.translations_for(page) }}
+
+    {{ page.content }}
+    {% endif %}
+
+    {% if page.modified %}
+        <p>
+        Last updated: {{ page.locale_modified }}
+        </p>
+    {% endif %}
+{% endblock %}
